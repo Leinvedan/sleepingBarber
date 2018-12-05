@@ -1,8 +1,7 @@
 CC = g++
 CFLAGS = -I$(INCDIR)
 #link flags
-#LDFLAGS = `sdl2-config --cflags --libs ` -lSDL2_image 
-LDFLAGS = -lpthread
+LDFLAGS = `sdl2-config --cflags --libs ` -lSDL2_image -lpthread
 
 #directories
 INCDIR =./include
@@ -12,7 +11,7 @@ SRCDIR = ./src
 
 EXEC = barber
 
-SOURCES = main.cpp 
+SOURCES = main.cpp camera.cpp entity.cpp gameEngine.cpp gameScene.cpp gameScreen.cpp spriteComponent.cpp vectorTwo.cpp
 _OBJ = $(SOURCES:.cpp=.o)
 OBJ  = $(patsubst %,$(OBJDIR)/%,$(_OBJ))
 
