@@ -207,9 +207,11 @@ void GameScreen::renderEntity(Entity* ent){
 		renderTexture(sc->getTexture(),target,&clip);
 
 	}
+	/*
 	else{
 		printf("Error: entity[%d] state's animation doesn't exist!!\n",ent->getID());
 	}
+	*/
 }
 void GameScreen::renderFinal(){
 	SDL_RenderPresent(mRenderer);

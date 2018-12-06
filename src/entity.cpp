@@ -2,7 +2,6 @@
 #include "spriteComponent.h"
 
 Entity::Entity(): ID(createID()){
-	mType = ENTITY;
 	mAnimations.resize(mNumberOfAnimations);
 }
 
@@ -73,9 +72,6 @@ bool Entity::isMarkedToDestroy(){
 	return mMarkedToDestroy;
 }
 
-uint32_t Entity::getType(){
-	return mType;
-}
 
 void Entity::receiveInput(const uint32_t input){
 	mLastInput = mLastInput | input;
@@ -95,4 +91,8 @@ void Entity::update(const double elapsed){
 		mX-=mSpeedPerTick*elapsed;
 	}
 
+}
+
+void Entity::setState(State e){
+	mState = e;
 }

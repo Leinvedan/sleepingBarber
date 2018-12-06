@@ -2,20 +2,24 @@
 #define MANAGER_H
 
 #include "entity.h"
-#include "vectorTwo.h"
 
 
-class Manager: public Entity{
+class Manager: public Entity{ //temp??
 private:
-		Entity* barber;
-		uint32_t nChairs;
-		VectorTwo barberChairPos;
-		vectorTwo firstChairPos;
+	Entity* mBarber;
+	Entity* mBarberChair;
+	std::vector<Entity*> mChairs;
+	std::vector<Entity*> mClients;
+	float mFirstChairX,mFirstChairY;
 public:
+	Manager(Entity*,Entity*,std::vector<Entity*>,std::vector<Entity*>);
+	void update(const double);
+	void moveClientToChair(uint32_t,uint32_t);
+	void moveClientToBarberChair(uint32_t);
+	void moveClientOut(uint32_t);
+	void cutHair(uint32_t);
+};
 
-
-
-}
 
 
 

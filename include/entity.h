@@ -15,7 +15,6 @@ protected:
 	//Function that updates the ID
 	uint32_t createID();
 	uint32_t ID;
-	uint32_t mType;
 	float mX,mY;
 	uint32_t mLastInput = 0; //Received from the last handleInput
 	uint32_t mState = 0;
@@ -25,19 +24,9 @@ protected:
 	uint8_t mNumberOfAnimations = 7;
 	std::vector<SpriteComponent*> mAnimations;
 public:
-	enum Type{
-		ENTITY,
-		CHARACTER,
-		COMBATANT
-	};
 	enum State{
 		IDLE,
-		WALKING,
-		RUNNING,
-		DYING,
-		SKILL_1,
-		SKILL_2,
-		SKILL_3
+		HAIRCUT
 	};
 	Entity();
 	//default methods
@@ -55,7 +44,7 @@ public:
 	virtual void receiveInput(const uint32_t);
 	void markToDestroy();
 	bool isMarkedToDestroy();
-	uint32_t getType();
+	void setState(State);
 	~Entity();
 
 	
