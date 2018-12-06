@@ -2,7 +2,7 @@
 #include <unistd.h>
 #include <semaphore.h>
 #include <thread>
-#include "trabSO1.h"
+#include "main_thread.h"
 
 namespace EXEC{
     unsigned int* buffer;			// armazena o numero do cliente
