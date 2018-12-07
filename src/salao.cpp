@@ -5,11 +5,12 @@
 #include "salao.h"
 
 
-Salao::Salao(unsigned int Num_cadeiras,Manager* man,GameEngine* g){
+Salao::Salao(unsigned int Num_cadeiras,unsigned int intervClient,Manager* man,GameEngine* g){
     N_CADEIRAS = Num_cadeiras;
     buffer = new unsigned int[Num_cadeiras];
     manager = man;
     mGame = g;
+    variacao_tempo_chegada = intervClient;
     sem_init(&clientes, 0, 0);
     sem_init(&mut, 0, 1);
 }
@@ -39,7 +40,7 @@ void Salao::gera_clientes(){
         updateScreenText();
         tC = std::thread(&Salao::execucao_clientes, this);
         tC.join();
-        sleep(rand() % 1);         // intervalo de chegada dos clientes
+        sleep(rand() % variacao_tempo_chegada);         // intervalo de chegada dos clientes
 
     }
 }
@@ -68,7 +69,7 @@ void Salao::execucao_clientes(){
 
 void Salao::inicializa_barbeiro(){
         tB = std::thread(&Salao::execucao_barbeiro, this);
-        //tB.join();       --> se habilitar isso, os clientes não executam. Não sei por que...
+        //tB.join();       //--> se habilitar isso, os clientes não executam. Não sei por que...
 }
 
 
@@ -96,6 +97,7 @@ void Salao::waiting(int id,int cadeira){
 void Salao::give_up(int id){
     printf("Cliente %i desistiu, salao cheio...\n",id);
     manager->rejectClient(id); //move sprite para área cinza, fora do salao
+    rejeitados++;
 }
 
 void Salao::serving(int cliente_atual){
@@ -107,12 +109,13 @@ void Salao::serving(int cliente_atual){
     printf("	Terminei de atender o cliente %i\n",cliente_atual);
     manager->cutHair(cliente_atual);
     manager->moveClientOut(cliente_atual); //move sprite para fora do salao
+    cortados++;
 }
 
 void Salao::updateScreenText(){
     std::string text;
-    text="Total: "+std::to_string(i)+"\n"+
-        "Atendidos: "+std::to_string(cortados)+"\n"+
-        "Rejeitados: "+std::to_string(rejeitados)+"\n";
+    text="Total: "+std::to_string(i)+" | "+
+        "Atendidos: "+std::to_string(cortados)+" | "+
+        "Rejeitados: "+std::to_string(rejeitados)+" | ";
     mGame->updateScreenText(text);
 }

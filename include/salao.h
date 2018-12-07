@@ -22,8 +22,9 @@ class Salao{
         unsigned int cortados = 0;
         sem_t clientes, mut;
         void updateScreenText();
+        unsigned int variacao_tempo_chegada = 4;
     public:
-        Salao(unsigned int,Manager*,GameEngine*);
+        Salao(unsigned int,unsigned int,Manager*,GameEngine*);
         void atrasoGeral();
         void execucao_barbeiro();
         void execucao_clientes();

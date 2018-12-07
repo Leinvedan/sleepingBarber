@@ -11,8 +11,8 @@ int GameScreen::initialize(std::string windowName){
 	} 
 
 	TTF_Init();
-	mFont = TTF_OpenFont("./content/openSans.ttf", 14);
-	mDisplayText = "Total: 0\n Atendidos: 0\n Rejeitados: 0\n";
+	mFont = TTF_OpenFont("./content/openSans.ttf", 24);
+	mDisplayText = "Total: 0 | Atendidos: 0 | Rejeitados: 0";
 	//Loading SDL_Image (Enable loading png files)
 	if ((IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG) != IMG_INIT_PNG){
 		logSDLError(std::cout, "IMG_Init");
@@ -184,18 +184,22 @@ void GameScreen::fillBackgroundTiles(){
 
 	
 	SDL_Color white = {255, 255, 255};
-	if (mFont == NULL) printf("NULO!\n");
+	if (mFont == NULL) printf("FONTE NULA!\n");
 
 	const char* text = mDisplayText.c_str();
-	SDL_Surface* surfaceMessage = TTF_RenderText_Blended_Wrapped(mFont, text, white,10);
+	SDL_Surface* surfaceMessage = TTF_RenderText_Solid(mFont, text, white);
 
-	SDL_Texture* Message = SDL_CreateTextureFromSurface(mRenderer, surfaceMessage);
+	SDL_Texture* message = SDL_CreateTextureFromSurface(mRenderer, surfaceMessage);
+
 	SDL_Rect Message_rect;
-	Message_rect.x = 0;
-	Message_rect.y = 0;
-	Message_rect.w = 500;
-	Message_rect.h = 500;
-	renderTexture(Message,0,0,100,100);
+
+	int texW = 0;
+	int texH = 0;
+	SDL_QueryTexture(message, NULL, NULL, &texW, &texH);
+	SDL_Rect dstrect = { 0, 0, texW, texH };
+
+	SDL_RenderCopy(mRenderer, message, NULL, &dstrect);
+	SDL_DestroyTexture(message);
 	SDL_FreeSurface(surfaceMessage);
 }
 

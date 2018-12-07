@@ -5,6 +5,7 @@
 #include "manager.h"
 #include "salao.h"
 #include <vector>
+#include <iostream>
 using namespace std;
 
 class BarberShop{
@@ -151,7 +152,15 @@ Manager* BarberShop::getManager(){
 
 int main(){
 
-	uint32_t nChairs = 5;
+	uint32_t nChairs;
+	uint32_t clientTimeRandom;
+	cout << "Numero de cadeiras (máximo 6):" << endl;
+	cin >> nChairs;
+	if (nChairs>6) nChairs = 6;
+	cout << "Limite da aleatoriedade do tempo de chegada " << endl;
+	cout << "dos clientes, em segundos: " << endl;
+	cin >> clientTimeRandom;
+	
 
 	
     
@@ -162,7 +171,7 @@ int main(){
     Manager* manager = bs.getManager();
 
     //start threads
-	Salao S(nChairs,manager,bs.getGameEngine());
+	Salao S(nChairs, clientTimeRandom, manager, bs.getGameEngine());
     S.inicializa_barbeiro();
     S.inicializa_clientes();
     printf("acabou threads\n");
