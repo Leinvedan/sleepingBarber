@@ -4,6 +4,7 @@
 #include "entity.h"
 
 
+
 class Manager: public Entity{ //temp??
 private:
 	Entity* mBarber;

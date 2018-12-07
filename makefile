@@ -11,7 +11,7 @@ SRCDIR = ./src
 
 EXEC = barber
 
-SOURCES = main.cpp camera.cpp entity.cpp gameEngine.cpp gameScene.cpp gameScreen.cpp spriteComponent.cpp vectorTwo.cpp manager.cpp
+SOURCES = main.cpp salao.cpp camera.cpp entity.cpp gameEngine.cpp gameScene.cpp gameScreen.cpp spriteComponent.cpp vectorTwo.cpp manager.cpp
 _OBJ = $(SOURCES:.cpp=.o)
 OBJ  = $(patsubst %,$(OBJDIR)/%,$(_OBJ))
 

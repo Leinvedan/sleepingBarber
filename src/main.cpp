@@ -3,6 +3,7 @@
 #include "gameEngine.h"
 #include "spriteComponent.h"
 #include "manager.h"
+#include "salao.h"
 #include <vector>
 using namespace std;
 
@@ -14,16 +15,18 @@ private:
 	Entity* mShopCenter;
 	std::vector<Entity*> mChairs;
 	std::vector<Entity*> mClients;
-	Entity* man; //moves the clients and the barber in each iteration
+	Manager* man; //moves the clients and the barber in each iteration
+	GameEngine* mGame;
 public:
-	BarberShop(){}
-	void openShop(uint32_t); //Starts the main loop
+	BarberShop(uint32_t);//create the sprites and add them to the scene
+	void openShop();//Starts the main loop
+	Manager* getManager();
 };
 
 
-void BarberShop::openShop(uint32_t _nChairs){
+BarberShop::BarberShop(uint32_t _nChairs){
 	//Initializing variables
-	GameEngine* game = new GameEngine();
+	mGame = new GameEngine();
 
 	std::string path;
 	SpriteComponent* sprComp;
@@ -39,36 +42,36 @@ void BarberShop::openShop(uint32_t _nChairs){
 	//Sprite Components
 	//barber
 	path = "content/barber.png";
-	sprComp = new SpriteComponent(game->getTexture(path));
+	sprComp = new SpriteComponent(mGame->getTexture(path));
 	mBarber->addSpriteComponent(sprComp,Entity::IDLE);
 
 	//barber shop icon
 	path = "content/barberShop.png";
-	sprComp = new SpriteComponent(game->getTexture(path));
+	sprComp = new SpriteComponent(mGame->getTexture(path));
 	mShopIcon->addSpriteComponent(sprComp,Entity::IDLE);
 
 	//chairs
 	path = "content/waitChair.png";
-	sprComp = new SpriteComponent(game->getTexture(path));
+	sprComp = new SpriteComponent(mGame->getTexture(path));
 	for (int i = 0; i < _nChairs; ++i){
 		mChairs[i] = new Entity();
 		mChairs[i]->addSpriteComponent(sprComp,Entity::IDLE);
 		mChairs[i]->setPosition(64*(i+2),64*3);
-		game->addToScene(mChairs[i]);
+		mGame->addToScene(mChairs[i]);
 	}
 
 	//barber chair
 	path = "content/barberChair.png";
-	sprComp = new SpriteComponent(game->getTexture(path));
+	sprComp = new SpriteComponent(mGame->getTexture(path));
 	mBarberChair->addSpriteComponent(sprComp,Entity::IDLE);
 
 	//add entities to the scene
-	game->addToScene(mBarber);
-	game->addToScene(mShopIcon);
-	game->addToScene(mBarberChair);
+	mGame->addToScene(mBarber);
+	mGame->addToScene(mShopIcon);
+	mGame->addToScene(mBarberChair);
 
 	//attach camera
-	game->attachCameraTo(mShopCenter);// move the camera to the center
+	mGame->attachCameraTo(mShopCenter);// move the camera to the center
 
 	//adjust positions
 	mShopCenter->setPosition(64*4,64*3); //camera's position
@@ -78,34 +81,59 @@ void BarberShop::openShop(uint32_t _nChairs){
 
 	//Initialize manager:
 	man = new Manager(mBarber,mBarberChair,mChairs,mClients);
-	game->subscribeToActionKeys(man);// subscribe to receive input
-	game->addToScene(man); //add manager to the scene
+	mGame->subscribeToActionKeys(man);// subscribe to receive input
+	mGame->addToScene(man); //add manager to the scene
 
 	//Create 20 invisible clients
 	for (int i = 0; i < 20; ++i){
 		Entity* client = new Entity();
 		path = "content/clientBefore.png";
-		sprComp = new SpriteComponent(game->getTexture(path));
+		sprComp = new SpriteComponent(mGame->getTexture(path));
 		client->addSpriteComponent(sprComp,Entity::IDLE);
 		path = "content/clientAfter.png";
 		client->addSpriteComponent(sprComp,Entity::HAIRCUT);
-		game->addToScene(client);
+		mGame->addToScene(client);
 		//put out of the screen
 		client->setPosition(-500,-500);
 		//add to the vector
 		mClients.push_back(client);
 	}
 
-	//start scene
-	game->setScene("content/layout.map");
-	game->mainLoop();
-	game->quit();
+}
 
+void BarberShop::openShop(){
+	//start scene
+	mGame->setScene("content/layout.map");
+	mGame->mainLoop();
+	mGame->quit();
+}
+
+Manager* BarberShop::getManager(){
+	return man;
 }
 
 int main(){
-	BarberShop bs;
-	bs.openShop(4);
+
+	uint32_t nChairs = 4;
+
+	
+    
+
+	//Initialize the shop
+	BarberShop bs(nChairs);
+	//get the manager
+    Manager* manager = bs.getManager();
+
+    //start threads
+	Salao S(nChairs,manager);
+    S.inicializa_barbeiro();
+    S.inicializa_clientes();
+    printf("acabou threads\n");
+    //sleep(10);
+
+
+    //start graphic interface
+	bs.openShop();
 
 	
 }
