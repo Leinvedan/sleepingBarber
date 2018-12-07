@@ -1,7 +1,7 @@
 CC = g++
 CFLAGS = -I$(INCDIR)
 #link flags
-LDFLAGS = `sdl2-config --cflags --libs ` -lSDL2_image -lpthread
+LDFLAGS = `sdl2-config --cflags --libs ` -lSDL2 -lSDL2_image -lSDL2_ttf -lpthread
 
 #directories
 INCDIR =./include

@@ -5,11 +5,11 @@
 #include "salao.h"
 
 
-Salao::Salao(unsigned int Num_cadeiras,Manager* man){
+Salao::Salao(unsigned int Num_cadeiras,Manager* man,GameEngine* g){
     N_CADEIRAS = Num_cadeiras;
     buffer = new unsigned int[Num_cadeiras];
     manager = man;
-           
+    mGame = g;
     sem_init(&clientes, 0, 0);
     sem_init(&mut, 0, 1);
 }
@@ -36,18 +36,21 @@ void Salao::execucao_barbeiro(){
 void Salao::gera_clientes(){
     sleep(2);
     while(1){
+        updateScreenText();
         tC = std::thread(&Salao::execucao_clientes, this);
         tC.join();
-        sleep(rand() % 4);         // intervalo de chegada dos clientes
+        sleep(rand() % 1);         // intervalo de chegada dos clientes
+
     }
 }
 
 void Salao::execucao_clientes(){
-    sem_wait(&mut); 
+    sem_wait(&mut);
     int id = i++;
     id = id % 19; //limitando os clientes, por causa de limitações da interface
+    manager->clientArriving(id);
+    sleep(1);//tempo que o cliente demora para chegar ao salao
     arrived(id);
-
     if(esperando < N_CADEIRAS){
         esperando++;
         sem_post(&clientes);
@@ -81,7 +84,7 @@ void Salao::rest(){
 void Salao::arrived(int id){
     printf("Cliente %i chegou...\n",id);
     manager->clientArrived(id);
-    manager->wakeBaber();
+    
 
 }
 
@@ -97,10 +100,19 @@ void Salao::give_up(int id){
 
 void Salao::serving(int cliente_atual){
     printf("	Atendendo o cliente %i...\n",cliente_atual);
+    manager->wakeBaber();
     manager->moveClientToBarberChair(cliente_atual); //move sprite pra cadeira do barbeiro
     sem_post(&mut);
     sleep(2);     	
     printf("	Terminei de atender o cliente %i\n",cliente_atual);
     manager->cutHair(cliente_atual);
     manager->moveClientOut(cliente_atual); //move sprite para fora do salao
+}
+
+void Salao::updateScreenText(){
+    std::string text;
+    text="Total: "+std::to_string(i)+"\n"+
+        "Atendidos: "+std::to_string(cortados)+"\n"+
+        "Rejeitados: "+std::to_string(rejeitados)+"\n";
+    mGame->updateScreenText(text);
 }

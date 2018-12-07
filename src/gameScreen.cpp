@@ -1,5 +1,6 @@
 
 #include "gameScreen.h"
+#include <SDL2/SDL_ttf.h>
 
 int GameScreen::initialize(std::string windowName){
 	
@@ -7,8 +8,11 @@ int GameScreen::initialize(std::string windowName){
 	if(SDL_Init(SDL_INIT_VIDEO) != 0){
 		logSDLError(std::cout,"SDL_Init");
 		return 1;
-	}
+	} 
 
+	TTF_Init();
+	mFont = TTF_OpenFont("./content/openSans.ttf", 14);
+	mDisplayText = "Total: 0\n Atendidos: 0\n Rejeitados: 0\n";
 	//Loading SDL_Image (Enable loading png files)
 	if ((IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG) != IMG_INIT_PNG){
 		logSDLError(std::cout, "IMG_Init");
@@ -171,6 +175,32 @@ void GameScreen::fillBackgroundTiles(){
 			}
 		}
 	}
+
+	//show text box
+
+	// Set the video mode
+	
+	
+
+	
+	SDL_Color white = {255, 255, 255};
+	if (mFont == NULL) printf("NULO!\n");
+
+	const char* text = mDisplayText.c_str();
+	SDL_Surface* surfaceMessage = TTF_RenderText_Blended_Wrapped(mFont, text, white,10);
+
+	SDL_Texture* Message = SDL_CreateTextureFromSurface(mRenderer, surfaceMessage);
+	SDL_Rect Message_rect;
+	Message_rect.x = 0;
+	Message_rect.y = 0;
+	Message_rect.w = 500;
+	Message_rect.h = 500;
+	renderTexture(Message,0,0,100,100);
+	SDL_FreeSurface(surfaceMessage);
+}
+
+void GameScreen::changeText(std::string _tex){
+	mDisplayText = _tex;
 }
 
 bool GameScreen::isVisible(float x,float y){

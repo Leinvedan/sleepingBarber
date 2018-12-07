@@ -64,6 +64,12 @@ const uint32_t MOVE_DOWN  = 0x02; //0000 0010
 const uint32_t MOVE_RIGHT = 0x04; //0000 0100
 const uint32_t MOVE_LEFT  = 0x08; //0000 1000
 
-
+//-----> [[Combat constants]] <-----
+const uint32_t RUN           = 0x10;   //0000 0001 0000
+const uint32_t ACTION_1      = 0x20;   //0000 0100 0000
+const uint32_t ACTION_2      = 0x40;   //0000 1000 0000
+const uint32_t ACTION_3      = 0x80;   //0000 0010 0000
+const uint32_t SWITCH_STANCE_NEXT = 0x100;  //0010 0000 0000
+const uint32_t SWITCH_STANCE_PREV = 0x200;  //0010 0000 0000
 
 #endif

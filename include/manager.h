@@ -25,6 +25,7 @@ public:
 	void cutHair(uint32_t);
 	void barberSleep();
 	void wakeBaber();
+	void clientArriving(uint32_t);
 
 	void setFirstChairPosition(float,float);
 	void setBarberPosition(float,float);

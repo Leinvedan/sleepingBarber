@@ -23,8 +23,12 @@ public:
 	BarberShop(uint32_t);//create the sprites and add them to the scene
 	void openShop();//Starts the main loop
 	Manager* getManager();
+	GameEngine* getGameEngine();
 };
 
+GameEngine* BarberShop::getGameEngine(){
+	return mGame;
+}
 
 BarberShop::BarberShop(uint32_t _nChairs){
 	//Initializing variables
@@ -147,7 +151,7 @@ Manager* BarberShop::getManager(){
 
 int main(){
 
-	uint32_t nChairs = 4;
+	uint32_t nChairs = 5;
 
 	
     
@@ -158,7 +162,7 @@ int main(){
     Manager* manager = bs.getManager();
 
     //start threads
-	Salao S(nChairs,manager);
+	Salao S(nChairs,manager,bs.getGameEngine());
     S.inicializa_barbeiro();
     S.inicializa_clientes();
     printf("acabou threads\n");

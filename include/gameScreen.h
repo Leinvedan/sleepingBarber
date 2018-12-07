@@ -4,6 +4,7 @@
 #include <iostream>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 #include <list>
 #include <vector>
 #include "entity.h"
@@ -20,6 +21,8 @@ private:
 	GameScene* mCurrentScene = nullptr;
 	std::vector<SDL_Texture*> mSceneTilesTex;
 	Camera mCamera;
+	TTF_Font* mFont;
+	std::string mDisplayText;
 
 	void logSDLError(std::ostream &, const std::string&);
 	void renderTexture(SDL_Texture*, SDL_Rect, SDL_Rect*);
@@ -51,6 +54,7 @@ public:
 	bool isVisible(float,float);
 	void getCameraXnY(float&,float&);
 	Camera* getCamera();
+	void changeText(std::string);
 
 };
 

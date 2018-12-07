@@ -41,6 +41,7 @@ public:
 	void quit();
 	void attachCameraTo(Entity*);
 	SDL_Texture* getTexture(std::string);
+	void updateScreenText(std::string);
 	
 
 };

@@ -182,3 +182,7 @@ void GameEngine::handleRendering(){
 void GameEngine::attachCameraTo(Entity* e){
 	mGScreen->attachCameraTo(e);
 }
+
+void GameEngine::updateScreenText(std::string text){
+	mGScreen->changeText(text);
+}

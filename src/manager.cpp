@@ -26,7 +26,6 @@ void Manager::setBarberPosition(float x,float y){
 
 void Manager::clientArrived(uint32_t client){
 	mClients[client]->clearInputBuffer(); //recycle previous client
-	mClients[client]->setState(Entity::IDLE);
 	mClients[client]->setPosition(64*2,64);
 }
 
@@ -45,11 +44,13 @@ void Manager::moveClientOut(uint32_t client){
 
 void Manager::rejectClient(uint32_t client){
 	mClients[client]->setPosition(64*6,64);
+	mClients[client]->clearInputBuffer(); 
 	mClients[client]->receiveInput(MOVE_UP);//set walking animation
 }
 
 
 void Manager::cutHair(uint32_t client){
+	mClients[client]->clearInputBuffer(); 
 	mClients[client]->setState(Entity::HAIRCUT);
 }
 
@@ -65,4 +66,11 @@ void Manager::wakeBaber(){
 	mSleep->setState(Entity::INVISIBLE);
 	mCut->setState(Entity::IDLE);
 	mBarber->setPosition(mBarberStartX,mBarberStartY);
+}
+
+void Manager::clientArriving(uint32_t client){
+	mClients[client]->clearInputBuffer(); 
+	mClients[client]->setState(Entity::IDLE);
+	mClients[client]->receiveInput(MOVE_RIGHT);//set walking animation
+	mClients[client]->setPosition(0,64);
 }
