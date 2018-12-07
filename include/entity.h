@@ -26,7 +26,8 @@ protected:
 public:
 	enum State{
 		IDLE,
-		HAIRCUT
+		HAIRCUT,
+		INVISIBLE
 	};
 	Entity();
 	//default methods

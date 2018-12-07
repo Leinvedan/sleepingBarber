@@ -4,6 +4,16 @@
 #include <thread>
 #include "salao.h"
 
+
+Salao::Salao(unsigned int Num_cadeiras,Manager* man){
+    N_CADEIRAS = Num_cadeiras;
+    buffer = new unsigned int[Num_cadeiras];
+    manager = man;
+           
+    sem_init(&clientes, 0, 0);
+    sem_init(&mut, 0, 1);
+}
+
 void Salao::execucao_barbeiro(){
     sleep(2);
     while(1){
@@ -19,6 +29,16 @@ void Salao::execucao_barbeiro(){
             rest();
             sem_wait(&clientes);
         }	
+    }
+}
+
+
+void Salao::gera_clientes(){
+    sleep(2);
+    while(1){
+        tC = std::thread(&Salao::execucao_clientes, this);
+        tC.join();
+        sleep(rand() % 4);         // intervalo de chegada dos clientes
     }
 }
 
@@ -42,28 +62,12 @@ void Salao::execucao_clientes(){
 }
 
 
-Salao::Salao(unsigned int Num_cadeiras,Manager* man){
-    N_CADEIRAS = Num_cadeiras;
-    buffer = new unsigned int[Num_cadeiras];
-    manager = man;
-           
-    sem_init(&clientes, 0, 0);
-	sem_init(&mut, 0, 1);
-}
 
 void Salao::inicializa_barbeiro(){
         tB = std::thread(&Salao::execucao_barbeiro, this);
         //tB.join();       --> se habilitar isso, os clientes não executam. Não sei por que...
 }
 
-void Salao::gera_clientes(){
-    sleep(2);
-    while(1){
-        tC = std::thread(&Salao::execucao_clientes, this);
-        tC.join();
-        sleep(rand() % 4);         // intervalo de chegada dos clientes
-    }
-}
 
 void Salao::inicializa_clientes(){
     tD = std::thread(&Salao::gera_clientes, this);
@@ -100,13 +104,3 @@ void Salao::serving(int cliente_atual){
     manager->cutHair(cliente_atual);
     manager->moveClientOut(cliente_atual); //move sprite para fora do salao
 }
-
-/*
-int main(){
-    Salao S(10);
-	
-    S.inicializa_barbeiro();
-    S.inicializa_clientes();
-    sleep(10);
-}
-*/

@@ -19,6 +19,7 @@ class Salao{
         sem_t clientes, mut;
     public:
         Salao(unsigned int,Manager* man);
+        void atrasoGeral();
         void execucao_barbeiro();
         void execucao_clientes();
         void inicializa_barbeiro();
@@ -29,6 +30,7 @@ class Salao{
         void give_up(int);
         void serving(int);
         void waiting(int,int);
+
 };
 
 #endif

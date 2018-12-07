@@ -13,6 +13,8 @@ private:
 	Entity* mBarberChair;
 	Entity* mShopIcon;
 	Entity* mShopCenter;
+	Entity* mSleepIcon;
+	Entity* mCuttingIcon;
 	std::vector<Entity*> mChairs;
 	std::vector<Entity*> mClients;
 	Manager* man; //moves the clients and the barber in each iteration
@@ -37,7 +39,8 @@ BarberShop::BarberShop(uint32_t _nChairs){
 	Entity* mShopIcon = new Entity();
 	Entity* mBarberChair = new Entity();
 	Entity* mShopCenter = new Entity();
-
+	Entity* mSleepIcon = new Entity();
+	Entity* mCuttingIcon = new Entity();
 
 	//Sprite Components
 	//barber
@@ -49,6 +52,16 @@ BarberShop::BarberShop(uint32_t _nChairs){
 	path = "content/barberShop.png";
 	sprComp = new SpriteComponent(mGame->getTexture(path));
 	mShopIcon->addSpriteComponent(sprComp,Entity::IDLE);
+
+	//sleep icon
+	path = "content/sleep.png" ;
+	sprComp = new SpriteComponent(mGame->getTexture(path));
+	mSleepIcon->addSpriteComponent(sprComp,Entity::IDLE);
+
+	//cutting
+	path = "content/cutting.png" ;
+	sprComp = new SpriteComponent(mGame->getTexture(path));
+	mCuttingIcon->addSpriteComponent(sprComp,Entity::IDLE);
 
 	//chairs
 	path = "content/waitChair.png";
@@ -71,6 +84,7 @@ BarberShop::BarberShop(uint32_t _nChairs){
 	mGame->addToScene(mBarberChair);
 	mGame->addToScene(mBarber);
 
+
 	//attach camera
 	mGame->attachCameraTo(mShopCenter);// move the camera to the center
 
@@ -79,6 +93,8 @@ BarberShop::BarberShop(uint32_t _nChairs){
 	mBarber->setPosition(64*4,64*5); //barber initial position
 	mShopIcon->setPosition(64*3,64); //barber shop icon
 	mBarberChair->setPosition(64*4,64*5); //barber chair
+	mSleepIcon->setPosition(64*4,64*4.3);
+	mCuttingIcon->setPosition(64*4,64*4.3);
 
 	
 
@@ -99,8 +115,17 @@ BarberShop::BarberShop(uint32_t _nChairs){
 		mClients.push_back(client);
 	}
 
+	//add icons
+	mSleepIcon->setScale(0.5);
+	mCuttingIcon->setScale(0.5);
+	mGame->addToScene(mSleepIcon);
+	mGame->addToScene(mCuttingIcon);
+	//set default visibility
+	mSleepIcon->setState(Entity::IDLE);
+	mCuttingIcon->setState(Entity::INVISIBLE);
+
 	//Initialize manager:
-	man = new Manager(mBarber,mBarberChair,mChairs,mClients);
+	man = new Manager(mBarber,mBarberChair,mSleepIcon,mCuttingIcon,mChairs,mClients);
 	man->setFirstChairPosition(64,64*3);
 	man->setBarberChairPosition(64*4,64*5);
 	man->setBarberPosition(64*5-20,64*4+30);

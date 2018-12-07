@@ -1,9 +1,11 @@
 #include "manager.h"
 
-Manager::Manager(Entity* b,Entity* bc,std::vector<Entity*> cha,std::vector<Entity*> cli){
+Manager::Manager(Entity* b,Entity* bc,Entity* sleep,Entity* cut,std::vector<Entity*> cha,std::vector<Entity*> cli){
 	mBarber = b;
 	mChairs = cha;
 	mClients = cli;
+	mCut = cut;
+	mSleep = sleep;
 
 }
 
@@ -54,9 +56,13 @@ void Manager::cutHair(uint32_t client){
 
 
 void Manager::barberSleep(){
+	mCut->setState(Entity::INVISIBLE);
+	mSleep->setState(Entity::IDLE);
 	mBarber->setPosition(mBarberChairX,mBarberChairY);
 }
 
 void Manager::wakeBaber(){
+	mSleep->setState(Entity::INVISIBLE);
+	mCut->setState(Entity::IDLE);
 	mBarber->setPosition(mBarberStartX,mBarberStartY);
 }
