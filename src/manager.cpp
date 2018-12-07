@@ -38,7 +38,6 @@ void Manager::moveClientToBarberChair(uint32_t client){
 }
 
 void Manager::moveClientOut(uint32_t client){
-	mClients[client]->setPosition(64*4,64); 
 	mClients[client]->receiveInput(MOVE_RIGHT);//set walking animation
 }
 
