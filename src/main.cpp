@@ -66,31 +66,31 @@ BarberShop::BarberShop(uint32_t _nChairs){
 	mBarberChair->addSpriteComponent(sprComp,Entity::IDLE);
 
 	//add entities to the scene
-	mGame->addToScene(mBarber);
+	
 	mGame->addToScene(mShopIcon);
 	mGame->addToScene(mBarberChair);
+	mGame->addToScene(mBarber);
 
 	//attach camera
 	mGame->attachCameraTo(mShopCenter);// move the camera to the center
 
 	//adjust positions
 	mShopCenter->setPosition(64*4,64*3); //camera's position
-	mBarber->setPosition(64*5,64*4); //barber initial position
+	mBarber->setPosition(64*4,64*5); //barber initial position
 	mShopIcon->setPosition(64*3,64); //barber shop icon
 	mBarberChair->setPosition(64*4,64*5); //barber chair
 
-	//Initialize manager:
-	man = new Manager(mBarber,mBarberChair,mChairs,mClients);
-	mGame->subscribeToActionKeys(man);// subscribe to receive input
-	mGame->addToScene(man); //add manager to the scene
+	
 
 	//Create 20 invisible clients
 	for (int i = 0; i < 20; ++i){
 		Entity* client = new Entity();
+		client->setSpeed(2);
 		path = "content/clientBefore.png";
 		sprComp = new SpriteComponent(mGame->getTexture(path));
 		client->addSpriteComponent(sprComp,Entity::IDLE);
 		path = "content/clientAfter.png";
+		sprComp = new SpriteComponent(mGame->getTexture(path));
 		client->addSpriteComponent(sprComp,Entity::HAIRCUT);
 		mGame->addToScene(client);
 		//put out of the screen
@@ -98,6 +98,14 @@ BarberShop::BarberShop(uint32_t _nChairs){
 		//add to the vector
 		mClients.push_back(client);
 	}
+
+	//Initialize manager:
+	man = new Manager(mBarber,mBarberChair,mChairs,mClients);
+	man->setFirstChairPosition(64,64*3);
+	man->setBarberChairPosition(64*4,64*5);
+	man->setBarberPosition(64*5-20,64*4+30);
+	mGame->subscribeToActionKeys(man);// subscribe to receive input
+	mGame->addToScene(man); //add manager to the scene
 
 }
 

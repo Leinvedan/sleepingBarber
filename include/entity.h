@@ -57,44 +57,12 @@ public:
 
 //-----> [[HIT filters]] <-----
 //Using the AND (&) operator
-//Represents the bits [0,19]
-const uint32_t DAMAGE_FILTER = 0x000FFFFF;
-//Represents the bits [20,28]
-const uint32_t STATS_FILTER  = 0x1FF00000;
-//Represents the bits [29,30,31]
-const uint32_t TYPE_FILTER   = 0xE0000000;
-//-----> [[Type constants]] <-----
-const uint32_t MELEE  = 0x20000000;
-const uint32_t MAGIC  = 0x40000000;
-const uint32_t RANGED = 0x80000000;
-
-//-----> [[Stats constants]] <-----
-//Stats with same number will overrite each other
-//otherwise they'll stack, in a way... (trying to use OR(|) at the moment)
-const uint32_t LIGHT_WOUND   = (50  << 20);
-const uint32_t MEDIUM_WOUND  = (75  << 20);
-const uint32_t HEAVY_WOUND   = (100  << 20);
-const uint32_t FIRE          = (200  << 20);
-const uint32_t ICE           = (200  << 20);
-const uint32_t PARALYSIS     = (150  << 20);
-const uint32_t COMMON_POISON = (300  << 20);
-const uint32_t RARE_POISON   = (400  << 20);
-const uint32_t LETAL_POISON  = (500 << 20);
-const uint32_t DEATH         = (511 << 20);
-
 //-----> [[Movement constants]] <-----
 const uint32_t MOVE_UP    = 0x01; //0000 0001
 const uint32_t MOVE_DOWN  = 0x02; //0000 0010
 const uint32_t MOVE_RIGHT = 0x04; //0000 0100
 const uint32_t MOVE_LEFT  = 0x08; //0000 1000
 
-//-----> [[Combat constants]] <-----
-const uint32_t RUN           = 0x10;   //0000 0001 0000
-const uint32_t ACTION_1      = 0x20;   //0000 0100 0000
-const uint32_t ACTION_2      = 0x40;   //0000 1000 0000
-const uint32_t ACTION_3      = 0x80;   //0000 0010 0000
-const uint32_t SWITCH_STANCE_NEXT = 0x100;  //0010 0000 0000
-const uint32_t SWITCH_STANCE_PREV = 0x200;  //0010 0000 0000
 
 
 #endif

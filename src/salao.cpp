@@ -5,6 +5,7 @@
 #include "salao.h"
 
 void Salao::execucao_barbeiro(){
+    sleep(2);
     while(1){
         sem_wait(&mut);
         if(esperando > 0){
@@ -24,12 +25,15 @@ void Salao::execucao_barbeiro(){
 void Salao::execucao_clientes(){
     sem_wait(&mut); 
     int id = i++;
+    id = id % 19; //limitando os clientes, por causa de limitações da interface
     arrived(id);
 
     if(esperando < N_CADEIRAS){
         esperando++;
         sem_post(&clientes);
-        buffer[posicao_buffer++ % N_CADEIRAS] = id;
+        unsigned int cadeiraCliente = posicao_buffer++ % N_CADEIRAS;
+        buffer[cadeiraCliente] = id;
+        waiting(id,cadeiraCliente);
     }
     else{
         give_up(id);
@@ -53,6 +57,7 @@ void Salao::inicializa_barbeiro(){
 }
 
 void Salao::gera_clientes(){
+    sleep(2);
     while(1){
         tC = std::thread(&Salao::execucao_clientes, this);
         tC.join();
@@ -61,38 +66,39 @@ void Salao::gera_clientes(){
 }
 
 void Salao::inicializa_clientes(){
-    /*
-    while(1){
-        tC = std::thread(execucao_clientes, this);
-        tC.join();
-        sleep(rand() % 4);         // intervalo de chegada dos clientes
-	}
-    */
     tD = std::thread(&Salao::gera_clientes, this);
 }
 
 void Salao::rest(){
+    manager->barberSleep();
     printf("	Dormindo...\n");
 }
 
 void Salao::arrived(int id){
     printf("Cliente %i chegou...\n",id);
-    //manager->moveClientToChair(id,0);
+    manager->clientArrived(id);
+    manager->wakeBaber();
 
+}
+
+void Salao::waiting(int id,int cadeira){
+    printf("Cliente %i sentou na cadeira %i...\n",id,cadeira);
+    manager->moveClientToChair(id,cadeira);
 }
 
 void Salao::give_up(int id){
     printf("Cliente %i desistiu, salao cheio...\n",id);
-    //manager->moveClientOut(id); //move sprite para área cinza, fora do salao
+    manager->rejectClient(id); //move sprite para área cinza, fora do salao
 }
 
 void Salao::serving(int cliente_atual){
     printf("	Atendendo o cliente %i...\n",cliente_atual);
-    //manager->moveClientToBarberChair(cliente_atual); //move sprite pra cadeira do barbeiro
+    manager->moveClientToBarberChair(cliente_atual); //move sprite pra cadeira do barbeiro
     sem_post(&mut);
     sleep(2);     	
     printf("	Terminei de atender o cliente %i\n",cliente_atual);
-    //manager->moveClientOut(cliente_atual); //move sprite para fora do salao
+    manager->cutHair(cliente_atual);
+    manager->moveClientOut(cliente_atual); //move sprite para fora do salao
 }
 
 /*

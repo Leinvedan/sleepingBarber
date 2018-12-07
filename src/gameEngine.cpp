@@ -58,15 +58,6 @@ void GameEngine::mainLoop(){
 		while (lag>= MS_PER_UPDATE){
 			updateScene(lag/MS_PER_UPDATE);
 			lag-=MS_PER_UPDATE;
-			//temp----------------------------------
-			frames++;
-			endTime = getCurrentTime()*1000;
-			if (endTime-startTime >=1){
-				std::cout << "FPS: "<<frames << std::endl;
-				startTime = getCurrentTime()*1000;
-				frames = 0;
-			}
-			//temp end-----------------------------
 		}
 		handleRendering();//RENDERING
 	}

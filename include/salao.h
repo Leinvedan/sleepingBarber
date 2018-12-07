@@ -28,6 +28,7 @@ class Salao{
         void arrived(int);
         void give_up(int);
         void serving(int);
+        void waiting(int,int);
 };
 
 #endif
