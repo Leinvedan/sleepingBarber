@@ -27,7 +27,7 @@ int GameScreen::initialize(std::string windowName){
 		SDL_Quit();
 		return 1;
 	}
-	SDL_SetWindowResizable(mWindow,SDL_TRUE);
+	//SDL_SetWindowResizable(mWindow,SDL_TRUE);
 
 	//Create renderer
 	mRenderer = SDL_CreateRenderer(mWindow,-1,SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);

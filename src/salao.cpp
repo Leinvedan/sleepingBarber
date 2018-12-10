@@ -69,7 +69,6 @@ void Salao::execucao_clientes(){
 
 void Salao::inicializa_barbeiro(){
         tB = std::thread(&Salao::execucao_barbeiro, this);
-        //tB.join();       //--> se habilitar isso, os clientes não executam. Não sei por que...
 }
 
 
@@ -85,8 +84,6 @@ void Salao::rest(){
 void Salao::arrived(int id){
     printf("Cliente %i chegou...\n",id);
     manager->clientArrived(id);
-    
-
 }
 
 void Salao::waiting(int id,int cadeira){
